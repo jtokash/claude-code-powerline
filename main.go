@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -8,6 +9,8 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"syscall"
+	"time"
 )
 
 // StatusInput is the JSON structure Claude Code sends on stdin.
@@ -313,8 +316,18 @@ func findGitDir(dir string) string {
 }
 
 func gitDirty(dir string) string {
-	cmd := exec.Command("git", "status", "--porcelain", "--untracked-files=no")
+	ctx, cancel := context.WithTimeout(context.Background(), 500*time.Millisecond)
+	defer cancel()
+
+	cmd := exec.CommandContext(ctx, "git", "status", "--porcelain", "--untracked-files=no")
 	cmd.Dir = dir
+	// Create a new process group so we can kill the entire child tree on timeout.
+	cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
+	cmd.Cancel = func() error {
+		// Kill the process group, not just the process.
+		return syscall.Kill(-cmd.Process.Pid, syscall.SIGKILL)
+	}
+
 	out, err := cmd.Output()
 	if err != nil {
 		return ""
