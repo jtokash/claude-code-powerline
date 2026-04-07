@@ -182,7 +182,7 @@ func contextSegment(input *StatusInput) string {
 	// Biohazard warning when context exceeds 132k tokens
 	prefix := ""
 	if usedTokens >= 132000 {
-		prefix = bold + fgYellow + "☣ " + reset
+		prefix = bold + fgYellow + "☣️  " + reset
 	}
 
 	text := bar

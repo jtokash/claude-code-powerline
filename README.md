@@ -29,7 +29,7 @@ Replaces shell-script + starship hacks with a native Go binary that parses Claud
 
 ```
 ██░░░ 60k/200k (30%) │ 7d:55% │ Opus │ ~/src/my-project │  main ✎ │ ⌥ my-worktree │ $0.15
-☣ ████░ 150k/200k (75%) │ Opus │ ~/src/my-project │  main │ $1.20
+☣️  ████░ 150k/200k (75%) │ Opus │ ~/src/my-project │  main │ $1.20
 ```
 
 ## Prerequisites
