@@ -1,9 +1,11 @@
 # claude-code-powerline
 
+> **Fork of [tylergannon/claude-code-powerline](https://github.com/tylergannon/claude-code-powerline)** — adds context percentage display, worktree segment, and improved visibility styling.
+
 A fast, single-binary statusline for [Claude Code](https://claude.ai/claude-code).
 
 ```bash
-go install github.com/tylergannon/claude-code-powerline@latest
+go install github.com/jtokash/claude-code-powerline@latest
 ```
 
 Then add to `~/.claude/settings.json`:
