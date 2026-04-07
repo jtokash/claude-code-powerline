@@ -23,10 +23,10 @@ Restart Claude Code and you're done.
 
 Replaces shell-script + starship hacks with a native Go binary that parses Claude Code's JSON on stdin and outputs a compact, color-coded powerline. One process, no dependencies.
 
-![segments illustration](https://img.shields.io/badge/context-battery-green) ![segments illustration](https://img.shields.io/badge/rate_limits-yellow-yellow) ![segments illustration](https://img.shields.io/badge/model-dimmed-lightgrey) ![segments illustration](https://img.shields.io/badge/directory-cyan-cyan) ![segments illustration](https://img.shields.io/badge/git-purple-purple) ![segments illustration](https://img.shields.io/badge/cost-dimmed-lightgrey)
+![segments illustration](https://img.shields.io/badge/context-battery-green) ![segments illustration](https://img.shields.io/badge/rate_limits-yellow-yellow) ![segments illustration](https://img.shields.io/badge/model-white-lightgrey) ![segments illustration](https://img.shields.io/badge/directory-cyan-cyan) ![segments illustration](https://img.shields.io/badge/git-purple-purple) ![segments illustration](https://img.shields.io/badge/worktree-yellow-yellow) ![segments illustration](https://img.shields.io/badge/cost-white-lightgrey)
 
 ```
-██░░░ 60k/200k │ 7d:55% │ Opus │ ~/src/my-project │  main ✎ │ $0.15
+██░░░ 60k/200k (30%) │ 7d:55% │ Opus │ ~/src/my-project │  main ✎ │ ⌥ my-worktree │ $0.15
 ```
 
 ## Prerequisites
@@ -53,11 +53,12 @@ You should see a green battery bar.
 
 | Segment | What it shows | When it appears |
 |---------|---------------|-----------------|
-| **Context battery** | `██░░░ 60k/200k` — 5-cell bar with token counts | Always (green < 50%, yellow 50-79%, bold red 80%+) |
+| **Context battery** | `██░░░ 60k/200k (30%)` — 5-cell bar with token counts and percentage | Always (green < 50%, yellow 50-79%, bold red 80%+) |
 | **Rate limits** | `5h:82% 7d:91%` — your Claude usage limits | Only when a limit exceeds 50% |
 | **Model** | `Opus`, `Sonnet`, etc. | Always |
 | **Directory** | `~/src/my-project` — home-shortened, truncated to 3 components | Always |
 | **Git** | ` main ✎` — branch from `.git/HEAD` + dirty indicator | Only in git repos |
+| **Worktree** | `⌥ my-worktree` — active worktree name | Only when in an isolated worktree |
 | **Cost** | `$0.15` — session cost in USD | When >= $0.01 |
 
 ### Color thresholds
