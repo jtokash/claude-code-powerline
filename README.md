@@ -2,6 +2,25 @@
 
 A fast, single-binary statusline for [Claude Code](https://claude.ai/claude-code).
 
+```bash
+go install github.com/tylergannon/claude-code-powerline@latest
+```
+
+Then add to `~/.claude/settings.json`:
+
+```json
+{
+  "statusLine": {
+    "type": "command",
+    "command": "claude-code-powerline"
+  }
+}
+```
+
+Restart Claude Code and you're done.
+
+---
+
 Replaces shell-script + starship hacks with a native Go binary that parses Claude Code's JSON on stdin and outputs a compact, color-coded powerline. One process, no dependencies.
 
 ![segments illustration](https://img.shields.io/badge/context-battery-green) ![segments illustration](https://img.shields.io/badge/rate_limits-yellow-yellow) ![segments illustration](https://img.shields.io/badge/model-dimmed-lightgrey) ![segments illustration](https://img.shields.io/badge/directory-cyan-cyan) ![segments illustration](https://img.shields.io/badge/git-purple-purple) ![segments illustration](https://img.shields.io/badge/cost-dimmed-lightgrey)
@@ -14,12 +33,6 @@ Replaces shell-script + starship hacks with a native Go binary that parses Claud
 
 - **Go 1.21+** — [install Go](https://go.dev/dl/)
 - **Claude Code** — the CLI, desktop app, or IDE extension
-
-## Install
-
-```bash
-go install github.com/tylergannon/claude-code-powerline@latest
-```
 
 Make sure `$GOPATH/bin` (usually `~/go/bin`) is on your `PATH`. If you're not sure:
 
@@ -35,23 +48,6 @@ echo '{"context_window":{"context_window_size":200000,"used_percentage":30}}' | 
 ```
 
 You should see a green battery bar.
-
-## Configure Claude Code
-
-Add this to `~/.claude/settings.json`:
-
-```json
-{
-  "statusLine": {
-    "type": "command",
-    "command": "claude-code-powerline"
-  }
-}
-```
-
-If you already have a `settings.json` with other keys, just add the `"statusLine"` block alongside them.
-
-That's it. Restart Claude Code (or start a new session) and the statusline should appear.
 
 ## What you get
 
@@ -83,6 +79,10 @@ rm "$(go env GOPATH)/bin/claude-code-powerline"
 ```
 
 Remove the `"statusLine"` block from `~/.claude/settings.json`.
+
+## Credits
+
+Thanks to [@jtokash](https://github.com/jtokash) whose bash + starship statusline script was the starting point for this tool.
 
 ## License
 
