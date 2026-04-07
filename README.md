@@ -29,6 +29,7 @@ Replaces shell-script + starship hacks with a native Go binary that parses Claud
 
 ```
 ██░░░ 60k/200k (30%) │ 7d:55% │ Opus │ ~/src/my-project │  main ✎ │ ⌥ my-worktree │ $0.15
+☣ ████░ 150k/200k (75%) │ Opus │ ~/src/my-project │  main │ $1.20
 ```
 
 ## Prerequisites
@@ -55,7 +56,8 @@ You should see a green battery bar.
 
 | Segment | What it shows | When it appears |
 |---------|---------------|-----------------|
-| **Context battery** | `██░░░ 60k/200k (30%)` — 5-cell bar with token counts and percentage | Always (green < 50%, yellow 50-79%, bold red 80%+) |
+| **Context battery** | `██░░░ 60k/200k (30%)` — 5-cell bar with token counts and percentage | Always (green → yellow at 132k tokens → bold red at 80%) |
+| **☣ Biohazard** | Yellow biohazard sign prepended to context battery | When context exceeds 132k tokens (Opus retrieval degradation threshold) |
 | **Rate limits** | `5h:82% 7d:91%` — your Claude usage limits | Only when a limit exceeds 50% |
 | **Model** | `Opus`, `Sonnet`, etc. | Always |
 | **Directory** | `~/src/my-project` — home-shortened, truncated to 3 components | Always |
@@ -65,7 +67,8 @@ You should see a green battery bar.
 
 ### Color thresholds
 
-- **Context battery**: green (< 50%) → yellow (50-79%) → bold red (80%+)
+- **Context battery**: green (< 132k tokens) → yellow (≥ 132k tokens) → bold red (80%+). The 132k threshold is where Opus becomes increasingly less likely to search for answers outside its context window.
+- **☣ Biohazard sign**: appears in bright yellow when context exceeds 132k tokens
 - **Rate limits**: yellow (50-79%) → bold red (80%+)
 - Segments that aren't relevant (no git repo, no rate limit pressure, low cost) are hidden automatically.
 

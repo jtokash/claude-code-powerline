@@ -161,6 +161,7 @@ func contextSegment(input *StatusInput) string {
 
 	pct := int(*input.ContextWindow.UsedPercentage)
 	total := input.ContextWindow.ContextWindowSize
+	usedTokens := pct * total / 100
 
 	// Battery bar: 5 cells
 	filled := (pct + 10) / 20
@@ -170,23 +171,30 @@ func contextSegment(input *StatusInput) string {
 	bar := strings.Repeat("█", filled) + strings.Repeat("░", 5-filled)
 
 	// Pick color based on usage
+	// 132k tokens is where Opus becomes less likely to search outside its context
 	color := fgGreen
 	if pct >= 80 {
 		color = bold + fgRed
-	} else if pct >= 50 {
+	} else if usedTokens >= 132000 {
 		color = fgYellow
+	}
+
+	// Biohazard warning when context exceeds 132k tokens
+	prefix := ""
+	if usedTokens >= 132000 {
+		prefix = bold + fgYellow + "☣ " + reset
 	}
 
 	text := bar
 	if total > 0 {
-		usedK := (pct * total / 100) / 1000
+		usedK := usedTokens / 1000
 		totalK := total / 1000
 		text = fmt.Sprintf("%s %dk/%dk (%d%%)", bar, usedK, totalK, pct)
 	} else {
 		text = fmt.Sprintf("%s %d%%", bar, pct)
 	}
 
-	return color + text + reset
+	return prefix + color + text + reset
 }
 
 func rateLimitSegment(input *StatusInput) string {
