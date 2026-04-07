@@ -127,7 +127,7 @@ func main() {
 
 	// Model name
 	if input.Model != nil && input.Model.DisplayName != "" {
-		segments = append(segments, dimmed+input.Model.DisplayName+reset)
+		segments = append(segments, fgWhite+input.Model.DisplayName+reset)
 	}
 
 	// Directory
@@ -140,12 +140,17 @@ func main() {
 		segments = append(segments, seg)
 	}
 
+	// Worktree
+	if seg := worktreeSegment(&input); seg != "" {
+		segments = append(segments, seg)
+	}
+
 	// Cost
 	if seg := costSegment(&input); seg != "" {
 		segments = append(segments, seg)
 	}
 
-	sep := dimmed + "│" + reset
+	sep := fgWhite + "│" + reset
 	fmt.Print(strings.Join(segments, " "+sep+" "))
 }
 
@@ -173,10 +178,12 @@ func contextSegment(input *StatusInput) string {
 	}
 
 	text := bar
-	if pct >= 10 && total > 0 {
+	if total > 0 {
 		usedK := (pct * total / 100) / 1000
 		totalK := total / 1000
-		text = fmt.Sprintf("%s %dk/%dk", bar, usedK, totalK)
+		text = fmt.Sprintf("%s %dk/%dk (%d%%)", bar, usedK, totalK, pct)
+	} else {
+		text = fmt.Sprintf("%s %d%%", bar, pct)
 	}
 
 	return color + text + reset
@@ -254,7 +261,7 @@ func gitSegment(input *StatusInput) string {
 		return ""
 	}
 
-	seg := fgMagenta + " " + branch + reset
+	seg := bold + fgMagenta + " " + branch + reset
 
 	if dirty := gitDirty(dir); dirty != "" {
 		seg += " " + bold + fgRed + dirty + reset
@@ -338,9 +345,16 @@ func gitDirty(dir string) string {
 	return ""
 }
 
+func worktreeSegment(input *StatusInput) string {
+	if input.Worktree == nil || input.Worktree.Name == "" {
+		return ""
+	}
+	return bold + fgYellow + "⌥ " + input.Worktree.Name + reset
+}
+
 func costSegment(input *StatusInput) string {
 	if input.Cost == nil || input.Cost.TotalCostUSD < 0.01 {
 		return ""
 	}
-	return dimmed + fmt.Sprintf("$%.2f", input.Cost.TotalCostUSD) + reset
+	return fgWhite + fmt.Sprintf("$%.2f", input.Cost.TotalCostUSD) + reset
 }
